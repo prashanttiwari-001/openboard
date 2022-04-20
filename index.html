@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Openboard_Clone</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="options-cont">
+        <img id="myImage" src="./image/2.svg">
+        <!-- <img src="./image/cross.svg"> -->
+    </div>
+    <div class="tools-cont scale-tools">
+    <img class="pencil" src="./image/pencil.svg">
+    <img class="eraser" src="./image/eraser.svg">
+    <img class="upload" src="./image/upload.svg">
+    <img class="download" src="./image/download.svg">
+    <img class="sticky" src="./image/sticky.svg">
+    <img class="undo" src="./image/undo.svg">
+    <img class="redo" src="./image/redo.svg">
+    </div>
+    <div class="pencil-tool-cont">
+        <div class="pencil-width-cont">
+            <input type="range" min="2" max="10" value="3">
+        </div>
+        <div class="pencil-color-cont">
+            <div class="red pencil-color"></div>
+            <div class="blue pencil-color"></div>
+            <div class="black pencil-color"></div>
+        </div>
+    </div>
+    <div class="eraser-tool-cont">
+        <input type="range" min="2" max="10" value="3">
+    </div>
+    <!-- <div class="sticky-cont">
+        <div class="header-cont">
+            <div class="minimize"></div>
+            <div class="remove"></div>
+        </div>
+        <div class="note-cont">
+            <textarea ></textarea>
+        </div>
+    </div> -->
+    <canvas></canvas>
+</body>
+<script src="./script.js"></script>
+<script src="./canvas.js"></script>
+</html>
