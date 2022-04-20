@@ -5,7 +5,7 @@ canvas.height = window.innerHeight;
 // tool is basically an API jiske through aap apne graphics ko perform karoge
 let tool =canvas.getContext("2d");
 
-tool.strokeStyle = "blue"; // for changing color
+tool.strokeStyle = "red"; // for changing color
 tool.lineWidth ="3";
 tool.beginPath(); //ek new graphics(path)(line) create karenge
 tool.moveTo(10,10); // esme 2 ciz hote hai kha se aapko aapke line ki starting karne hai
