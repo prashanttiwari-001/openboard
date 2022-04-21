@@ -6,11 +6,16 @@ let pencilColor = document.querySelectorAll(".pencil-color");
 let pencilWidthElem = document.querySelector(".pencil-width");
 let eraserWidthElem = document.querySelector(".eraser-width");
 let download = document.querySelector(".download");
+let redo = document.querySelector(".redo");
+let undo = document.querySelector(".undo");
 
 let penColor = "red";
 let eraserColor = "white";
 let penWidth = pencilWidthElem.value;
 let eraserWidth = eraserWidthElem.value;
+
+let undoRedoTracker =[]; //data
+let track = 0; //represent which ation from tracker array
 
 let mouseDown = false;
 
@@ -51,7 +56,42 @@ canvas.addEventListener("mousemove",function(e){
 })
 canvas.addEventListener("mouseup",(e)=>{
     mouseDown = false;
+
+    let url = canvas.toDataURL();
+    undoRedoTracker.push(url);
+    track = undoRedoTracker.length-1;
 })
+undo.addEventListener("click",(e)=>{
+    // console.log(e);
+    if(track >0) track--; 
+    // track action
+    let trackObj ={
+        trackvalue: track,
+        undoRedoTracker
+    }
+    undoRedoCanvas(trackObj);
+})
+redo.addEventListener("click",(e)=>{
+    if(track < undoRedoTracker.length-1) track++;
+    // track action
+    let trackObj ={
+        trackvalue: track,
+        undoRedoTracker
+    }
+    undoRedoCanvas(trackObj);
+})
+function undoRedoCanvas(trackObj){
+    // re-initilize the value
+    track = trackObj.trackvalue;
+    undoRedoTracker = trackObj.undoRedoTracker;
+
+    let url = undoRedoTracker[track]
+    let img = new Image();  //new image refrence element
+    img.src = url;
+    img.onload = (e) =>{
+        tool.drawImage(img,0, 0, canvas.width, canvas.height);
+    }
+}
 function beginPath(strokeObj){
     tool.beginPath();
     tool.moveTo(strokeObj.x, strokeObj.y);
@@ -74,7 +114,7 @@ pencilWidthElem.addEventListener("change",(e)=>{
     tool.lineWidth = penWidth;
 })
 eraserWidthElem.addEventListener("change",(e)=>{
-    eraserWidth = eraserlWidthElem.value;
+    eraserWidth = eraserWidthElem.value;
     tool.lineWidth = eraserWidth;
 })
 eraser.addEventListener("click",(e)=>{
