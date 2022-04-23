@@ -1,3 +1,5 @@
+
+
 let canvas = document.querySelector("canvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -41,18 +43,33 @@ tool.lineWidth = penWidth;
 // mousedown -> start new path, mousemove fill (graphics)
 canvas.addEventListener("mousedown",function(e){
     mouseDown = true;
-    beginPath({
+    // beginPath({
+    //     x: e.clientX,
+    //     y: e.clientY
+    // })
+    let data ={
         x: e.clientX,
         y: e.clientY
-    })
+    }
+    // send data to server
+    socket.emit("beginPath",data);
 })
 canvas.addEventListener("mousemove",function(e){
-   if(mouseDown) drawStroke({
-    x: e.clientX,
-    y: e.clientY,
-    color: eraserFlag ? eraserColor : penColor,
-    width: eraserFlag ? eraserWidth : penWidth
-   })
+    if(mouseDown) {
+        let data ={
+            x: e.clientX,
+            y: e.clientY,
+            color: eraserFlag ? eraserColor : penColor,
+            width: eraserFlag ? eraserWidth : penWidth
+        }
+        socket.emit("drawStroke",data);
+    }
+//     drawStroke({
+//     // x: e.clientX,
+//     // y: e.clientY,
+//     // color: eraserFlag ? eraserColor : penColor,
+//     // width: eraserFlag ? eraserWidth : penWidth
+//    })
 })
 canvas.addEventListener("mouseup",(e)=>{
     mouseDown = false;
@@ -65,20 +82,22 @@ undo.addEventListener("click",(e)=>{
     // console.log(e);
     if(track >0) track--; 
     // track action
-    let trackObj ={
+    let data ={
         trackvalue: track,
         undoRedoTracker
     }
-    undoRedoCanvas(trackObj);
+    // undoRedoCanvas(trackObj);
+    socket.emit("redoUndo",data);
 })
 redo.addEventListener("click",(e)=>{
     if(track < undoRedoTracker.length-1) track++;
     // track action
-    let trackObj ={
+    let data ={
         trackvalue: track,
         undoRedoTracker
     }
-    undoRedoCanvas(trackObj);
+    // undoRedoCanvas(trackObj);
+    socket.emit("redoUndo",data);
 })
 function undoRedoCanvas(trackObj){
     // re-initilize the value
@@ -136,3 +155,15 @@ download.addEventListener("click",function(e){
     a.click();
 })
 
+socket.on("beginPath",(data)=>{
+    // data from server
+    beginPath(data);
+})
+
+socket.on("drawStroke",(data)=>{
+    drawStroke(data);
+})
+
+socket.on("redoUndo",(data)=>{
+    undoRedoCanvas(data);
+})
